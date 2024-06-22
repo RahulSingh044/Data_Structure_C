@@ -1,15 +1,11 @@
 #include <stdio.h>
 
 int GCD( int x, int y) {
-     if(x>y) {
-         if(x%y == 0) {
-             return y;
-         }
-         GCD(y,x%y);
-     }
-     else {
-        GCD(y,x);
-     }
+    if(y == 0) {
+        return x;
+    } else {
+        GCD(y,x%y);
+    }
 }
 
 int main() {
