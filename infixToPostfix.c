@@ -82,7 +82,7 @@ void infixToPostfix(char inf[], char post[])
         }
         else if (operator(value))
         {
-            while (top >= 0 && rank(stack[top]) > rank(value))
+            while (top >= 0 && rank(stack[top]) >= rank(value))
             {
                 post[j++] = pop();
             }
