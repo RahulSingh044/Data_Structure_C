@@ -90,6 +90,7 @@ void infixToPostfix(char inf[], char post[])
         }
         i++;
     }
+     // for checking that all the elements of infix are transferred to postfix
     while (top >= 0)
     {
         post[j++] = pop();
