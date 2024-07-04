@@ -24,11 +24,11 @@ int dequeue() {
         return -1;
     }
     else {
+        printf("The dequeued element is %d \n", queue[front++]);
         if(front > rear) {
             front = -1;
             rear = -1;
         }
-       printf("The dequeued element is %d ", queue[front++]);
     }
 }
 
@@ -36,5 +36,8 @@ int main() {
    enqueue(10);
    enqueue(20);
    enqueue(30);
+   dequeue();
+   dequeue();
+   dequeue();
    dequeue();
 }
