@@ -32,12 +32,34 @@ int dequeue() {
     }
 }
 
+int search(int target) {
+    for(int i=front; i<=rear; i++) {
+        if(queue[i] == target) {
+            return i;
+        }
+    }
+    return -1;
+}
+
+void traverse() {
+    for(int i=front; i<=rear; i++) {
+        printf("%d\t",queue[i]);
+    }
+}
+
 int main() {
+    int n;
    enqueue(10);
    enqueue(20);
    enqueue(30);
    dequeue();
-   dequeue();
-   dequeue();
-   dequeue();
+   traverse();
+   printf("\nEnter the element to be searched in queue: \t");
+   scanf("%d",&n);
+   int result = search(n);
+   if(result != -1) {
+       printf("Element is found at index %d",result);
+   }
+   else
+    printf("Element is not in the queue");
 }
