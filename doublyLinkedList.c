@@ -33,6 +33,29 @@ void insertBeg(int value)
     Head = newN;
 }
 
+// Insert at particular position
+void insertAtPos(int value, int indx)
+{
+    Node *newN = newNode(value);
+    Node *curr = Head;
+    int i = 0;
+    // if you are inserting node at head
+    if(indx == 0) {
+        insertBeg(value);
+        return;
+    }
+    while (i != indx-1 && curr != NULL)
+    {
+        curr = curr->next;
+        i++;
+    }
+    curr->next->prev = newN;
+    newN->next = curr->next;
+    curr->next = newN;
+    newN->prev = curr;
+
+}
+
 // Insertion at the end of the Linked list
 void insertEnd(int value)
 {
@@ -46,11 +69,29 @@ void insertEnd(int value)
     newN->prev = curr;
 }
 
+void reverse()
+{
+    Node *curr = Head;
+    Node *prev = NULL;
+    Node *next = NULL;
+    while (curr != NULL)
+    {
+        next = curr->next;
+        curr->next = prev;
+        curr->prev = next;
+        prev = curr;
+        curr = next;
+    }
+    Head = prev;
+    printf("Reverse Linked List: \n");
+    display();
+}
+
 void delete(int key)
 {
     Node *curr = Head;
     Node *ptr = Head->next;
-    
+
     if (curr->data == key)
     {
         curr->next->prev = NULL;
@@ -88,7 +129,8 @@ int main()
     insertBeg(20);
     insertBeg(80);
     insertBeg(90);
+    insertAtPos(151, 0);
     insertEnd(33);
-    delete (90);
     display();
+    reverse();
 }
