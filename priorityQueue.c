@@ -1,4 +1,3 @@
-// Priority Queue using Linked List...
 #include <stdio.h>
 #include <stdlib.h>
 typedef struct Node
@@ -44,6 +43,16 @@ void enqueue(int value, int priority)
     
 }
 
+void dequeue() {
+    if(Head == NULL) {
+        printf("Queue is underflow or Empty");
+        return;
+    }
+    Node *curr = Head;
+    Head = curr->next;
+    free(curr);
+}
+
 void display()
 {
     Node *curr = Head;
@@ -60,5 +69,6 @@ int main()
     enqueue(8, 3);
     enqueue(6, 1);
     enqueue(10, 5);
+    dequeue();
     display();
 }
