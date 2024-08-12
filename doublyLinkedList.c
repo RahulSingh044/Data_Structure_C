@@ -124,6 +124,23 @@ void display()
     printf("Null");
 }
 
+void search(int value)
+{
+    struct Node *current = Head;
+    int i=0;
+   while (current != NULL)
+    {
+        if (current->data == value)
+        {
+            printf("Element %d found in the list at %d\n", value,i);
+            return;
+        }
+        current = current->next;
+        i++;
+    }
+    printf("Element %d not found in the list\n", value);
+}
+
 int main()
 {
     insertBeg(20);
