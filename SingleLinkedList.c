@@ -1,13 +1,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-struct Node
+typedef struct Node
 {
     int data;
     struct Node *next;
-};
+}Node;
 
-struct Node *Head = NULL;
+Node *Head = NULL;
 
 struct Node *newNode(int value)
 {
@@ -28,6 +28,25 @@ void insertAtBeg(int value)
     nodeptr->data = value;
     nodeptr->next = Head;
     Head = nodeptr;
+}
+
+void insertAtPos(int value, int indx)
+{
+    Node *newN = newNode(value);
+    Node *curr = Head;
+    int i = 0;
+    // if you are inserting node at head
+    if(indx == 0) {
+        insertAtBeg(value);
+        return;
+    }
+    while (i != indx-1 && curr != NULL)
+    {
+        curr = curr->next;
+        i++;
+    }
+    newN->next = curr->next;
+    curr->next = newN;
 }
 
 void insertAtEnd(int value)
@@ -102,8 +121,8 @@ void printlist()
 
 int main()
 {
-    Head = newNode(65);
     insertAtBeg(88);
+    insertAtPos(77,1);
     insertAtEnd(99);
     // delete (65);
     search(65);
