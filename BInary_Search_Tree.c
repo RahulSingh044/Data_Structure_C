@@ -1,76 +1,188 @@
-// Online C compiler to run C program online
 #include <stdio.h>
-#include<stdlib.h>
+#include <stdlib.h>
+#include <stdbool.h>
 
-typedef struct Node{
-  int data;
-  struct Node *right; 
-  struct Node *left;
-}Node;
+typedef struct Node
+{
+    int data;
+    struct Node *right;
+    struct Node *left;
+} tree;
 
-Node *newNode(int val) {
-    Node *newN = (Node*)malloc(sizeof(Node));
-    newN->data = val;
-    newN->left = NULL;
-    newN->right = NULL;
-    return newN;
+tree *root = NULL;
+
+tree *newNode(int data)
+{
+    tree *node = (tree *)malloc(sizeof(tree));
+    node->data = data;
+    node->left = NULL;
+    node->right = NULL;
+    return node;
 }
 
-void inOrderTraversal(Node *rootNode){
-    if(rootNode == NULL) return;
-    inOrderTraversal(rootNode->left);
-    printf("%d\t",rootNode->data);
-    inOrderTraversal(rootNode->right);
-}
-
-void postOrderTraversal(Node *rootNode){
-    if(rootNode == NULL) return;
-    inOrderTraversal(rootNode->left);
-    inOrderTraversal(rootNode->right);
-    printf("%d\t",rootNode->data);
-}
-
-void preOrderTraversal(Node *rootNode){
-    if(rootNode == NULL) return;
-    printf("%d\t",rootNode->data);
-    inOrderTraversal(rootNode->left);
-    inOrderTraversal(rootNode->right);
-   
-}
-
-Node  *searchNode(int value,Node *rootNode){
-    if(rootNode == NULL || rootNode->data == value){
-        return rootNode;
+tree *insertIntoBST(tree *root, int data)
+{
+    if (root == NULL)
+    {
+        root = newNode(data);
+        return root;
     }
-    else if(rootNode->data > value) {
-        return searchNode(value,rootNode->left);
-    }
-    else{
-        return searchNode(value,rootNode->right);
-    }
-    return NULL;
-}
 
-int main() {
-   Node *root = newNode(12);
-    root->left = newNode(10);
-    root->right =newNode(20);
-    root->left->left = newNode(9);
-    root->left->right = newNode(11);
-    root->right->left = newNode(19);
-    root->right->right = newNode(24);
-    printf("In Order Traversal\n");
-    inOrderTraversal(root);
-    printf("\nIn Post Traversal\n");
-    postOrderTraversal(root);
-    printf("\nIn Pre Traversal\n");
-    preOrderTraversal(root);
-    int key = 100;
-    printf("\n");
-    Node *result = searchNode(key,root);
-    if(result==NULL)
-       printf("%d is not found",key);
+    if (data < root->data)
+        root->left = insertIntoBST(root->left, data);
     else
-     printf("%d is found ", result->data);
-      
+        root->right = insertIntoBST(root->right, data);
+
+    return root;
+}
+
+void takeInput()
+{
+    int data;
+    scanf("%d", &data);
+
+    while (data != -1)
+    {
+        root = insertIntoBST(root, data);
+        scanf("%d", &data);
+    }
+}
+
+void inorderTraversal(tree *root)
+{
+    if (root != NULL)
+    {
+        inorderTraversal(root->left);
+        printf("%d ", root->data);
+        inorderTraversal(root->right);
+    }
+}
+
+// Searching Node In BST
+bool nodeSearch(tree *root, int data)
+{
+    // base case
+    if (root == NULL)
+        return false;
+
+    if (root->data == data)
+        return true;
+
+    if (data < root->data)
+    {
+        return nodeSearch(root->left, data);
+    }
+    else
+    {
+        return nodeSearch(root->right, data);
+    }
+}
+
+// Minimum node in BST
+int minNode(tree *root)
+{
+    tree *temp = root;
+    while (temp->left != NULL)
+    {
+        temp = temp->left;
+    }
+    return temp->data;
+}
+
+// Maximum node in BST
+int maxNode(tree *root)
+{
+    tree *temp = root;
+    while (temp->right != NULL)
+    {
+        temp = temp->right;
+    }
+    return temp->data;
+}
+
+// Delete node from BST
+tree *deleteNode(tree *root, int val)
+{
+
+    // base case
+    if (root == NULL)
+        return root;
+
+    if (root->data == val)
+    {
+
+        // having 0 child
+        if(root->left == NULL && root->right == NULL)
+        {
+            free(root);
+            return NULL;
+        }
+
+        // having 1 child
+        // left child
+        if (root->left != NULL && root->right == NULL)
+        {
+            tree *temp = root;
+            free(root);
+            return temp;
+        }
+
+        // right child
+        if (root->left == NULL && root->right != NULL)
+        {
+            tree *temp = root;
+            free(root);
+            return temp;
+        }
+
+        // having 2 child with minimum value approach
+        if (root->left != NULL && root->right != NULL)
+        {
+            int minVal = minNode(root->right);
+            root->data = minVal;
+            root->right = deleteNode(root->right, minVal);
+            return root;
+        }
+    }
+    else if (val < root->data)
+    {
+        root->left = deleteNode(root->left, val);
+        return root;
+    }
+    else
+    {
+        root->right = deleteNode(root->right, val);
+        return root;
+    }
+}
+
+int main()
+{
+
+    printf("Enter data to create a BST \n");
+    takeInput();
+
+    printf("Inorder traversal of the BST: ");
+    inorderTraversal(root);
+
+    int searchData;
+    printf("\nEnter the number to search: ");
+    scanf("%d", &searchData);
+    int result = nodeSearch(root, searchData);
+
+    if (result)
+    {
+        printf("%d found in the BST\n", searchData);
+    }
+    else
+    {
+        printf("%d not found in the BST\n", searchData);
+    }
+
+    printf("Enter the number to delete: ");
+    scanf("%d", &searchData);
+    root = deleteNode(root, searchData);
+
+    printf("Inorder traversal of the BST: ");
+    inorderTraversal(root);
 }
